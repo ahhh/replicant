@@ -154,8 +154,8 @@ def main():
         return 1
     r = bot_Login(con)
     subreddit = con.subreddit
-    #upvote_User(r, "ge_reed_richards", opts.timing)
-    #downvote_user(r, "ge_reed_richards", opts.timing)
+    #upvote_User(r, "", opts.timing)
+    #downvote_user(r, "", opts.timing)
     #upvote_Post_Filter(r, subreddit, "security", opts.timing)
     if opts.words is not None and opts.filterz is None and opts.redditorz is None:
         comment_On_Top_10_Posts(r, subreddit, opts.words, opts.timing)
