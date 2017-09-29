@@ -1,5 +1,5 @@
 # author: ahhh
-# reddit replicant v0.2
+# reddit replicant v0.3
 
 import praw
 import time, datetime
@@ -88,7 +88,7 @@ def upvote_User(r, redditorz, timing):
         time.sleep(float(timing))
 
 
-def troll_User(r, redditorz, filename, timing):
+def troll_User(r, subreddit, redditorz, filename, timing):
     #  comments on all of a users posts
     print "loading your comments file"
     try:
@@ -97,13 +97,15 @@ def troll_User(r, redditorz, filename, timing):
         wordfile.close()
     except:
         "error loading your comments file"
-    for submission in r.redditor(redditorz).new(limit=10):
-        print(submission.title.lower())
-        comment = random.choice(wordbuf)
-        submission.reply(comment)
-        print str(datetime.datetime.now()) + " posted comment " + comment
-        print "sleeping for " + str(timing) + " sec"
-        time.sleep(float(timing))
+    for submission in r.subreddit(subreddit).comments():
+        print(submission.body.lower())
+        print(submission.author)
+        if str(submission.author) == redditorz:
+            comment = random.choice(wordbuf)
+            submission.reply(comment)
+            print str(datetime.datetime.now()) + " posted comment " + comment
+            print "sleeping for " + str(timing) + " sec"
+            time.sleep(float(timing))
 
 
 # Main function with options for running script directly
@@ -156,7 +158,7 @@ def main():
     subreddit = con.subreddit
     #upvote_User(r, "", opts.timing)
     #downvote_user(r, "", opts.timing)
-    #upvote_Post_Filter(r, subreddit, "security", opts.timing)
+    #upvote_Post_Filter(r, subreddit, "", opts.timing)
     if opts.words is not None and opts.filterz is None and opts.redditorz is None:
         comment_On_Top_10_Posts(r, subreddit, opts.words, opts.timing)
 
@@ -164,7 +166,7 @@ def main():
         comments_On_Comments(r, subreddit, opts.words, opts.filterz, opts.timing)
 
     if opts.words is not None and opts.filterz is None and opts.redditorz is not None:
-        troll_User(r, opts.redditorz, opts.words, opts.timing)
+        troll_User(r, subreddit, opts.redditorz, opts.words, opts.timing)
 
 
 
